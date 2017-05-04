@@ -11,24 +11,24 @@ IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
 def index(request):
     if not request.user.is_authenticated():
         return render(request, 'web/login.html')
-    #else:
+    else:
         #albums = Album.objects.filter(user=request.user)
         #song_results = Song.objects.all()
-        #query = request.GET.get("q")
-        #if query:
-        #    albums = albums.filter(
-        #        Q(album_title__icontains=query) |
-        #        Q(artist__icontains=query)
-        #    ).distinct()
-        #    song_results = song_results.filter(
-        #        Q(song_title__icontains=query)
-        #    ).distinct()
-        #    return render(request, 'music/index.html', {
-        #        'albums': albums,
-        #        'songs': song_results,
-        #    })
-    else:
-        return render(request, 'web/login.html', {})
+        query = request.GET.get("q")
+        if query:
+            albums = albums.filter(
+                Q(album_title__icontains=query) |
+                Q(artist__icontains=query)
+            ).distinct()
+            song_results = song_results.filter(
+                Q(song_title__icontains=query)
+            ).distinct()
+            return render(request, 'web/index.html', {
+                #'albums': albums,
+                #'songs': song_results,
+            })
+        else:
+            return render(request, 'web/index.html', {})
 
 
 def logout_user(request):
@@ -49,9 +49,9 @@ def login_user(request):
             if user.is_active:
                 login(request, user)
 #                albums = Album.objects.filter(user=request.user)
-#                return render(request, 'music/index.html', {'albums': albums})
+                return render(request, 'web/index.html', {})
             else:
-                return render(request, 'web/login.html', {'error_message': 'Your account has been disabled'})
+                return render(request, 'web/login.html', {'error_message': 'Su cuenta esta deshabilitada'})
         else:
             return render(request, 'web/login.html', {'error_message': 'Invalid login'})
     return render(request, 'web/login.html')
