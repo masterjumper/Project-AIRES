@@ -7,6 +7,10 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     #url(r'^web/', include('web.urls', namespace='web')),
     url(r'^', include('web.urls')),
+    url(
+        r'^django_popup_view_field/',
+        include('django_popup_view_field.urls', namespace="django_popup_view_field")
+    ),
 ]
 
 if settings.DEBUG:

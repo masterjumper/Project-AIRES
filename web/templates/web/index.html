@@ -8,6 +8,12 @@
         <div class="col-sm-12">
             <h3>{{ user.username }}'s desktop</h3>
         </div>
+        {% if users %}
+            {% for user in users %}
+                {{ user.user }}    
+            {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
+            {% endfor %}
+        {% endif %}
         {% if albums %}
             {% for album in albums %}
                 <div class="col-sm-4 col-lg-2">

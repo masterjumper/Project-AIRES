@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load django_popup_view_field_tags %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -44,17 +45,27 @@
                 </div>
                 <button type="submit" class="btn btn-default">Buscar</button>
             </form>
-                      <ul class="nav navbar-nav navbar-right">
+                <ul class="nav navbar-nav navbar-right">
+                 <li>
+                    <a href="#">
+                        <span class="glyphicon glyphicon-bell" aria-hidden="true" name="notificaciones"></span>&nbsp;
+                    </a>
+                </li>
                 <li>
                     <a href="#">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Agregar Servicio
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true" name="informacion"></span>&nbsp;
                     </a>
                 </li>
-                <li>
-                    <a href="{% url 'web:logout_user' %}">
-                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Salir
+                <li class="dropdown">  
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="glyphicon glyphicon-user" name="usuario"></span>&nbsp;
                     </a>
-                </li>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'web:mi_perfil_usuario' %}">Mi Perfil</a></li>
+                        <li><a href="#">-</a></li>
+                        <li><a href="{% url 'web:logout_user' %}">Salir</a></li>
+                    </ul>
+                 </li>    
             </ul>
             </li>  
         </div><!--/.nav-collapse -->
@@ -72,5 +83,6 @@
             {% endblock %}        
         </div>
     </footer>
+    {% django_popup_view_field_javascript %}
 </body>
 </html>
