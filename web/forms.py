@@ -2,8 +2,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django_popup_view_field.fields import PopupViewField
 from web.popups import ColorsPopupView
-#from .models import Album, Song
-
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from .models import DJ_user_client, CustomUserManager
 
 #class AlbumForm(forms.ModelForm):
 
@@ -19,13 +19,42 @@ from web.popups import ColorsPopupView
 #        fields = ['song_title', 'audio_file']
 
 
-class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
+
+
+class DJ_user_clientCreationForm(UserCreationForm):
+    """
+    A form that creates a user, with no privileges, from the given email and
+    password.
+    """
+
+    def __init__(self, *args):
+        super(DJ_user_clientCreationForm, self).__init__(*args)
+        del self.fields['DJ_user']
 
     class Meta:
         model = DJ_user_client
-        fields = ['DJ_user', 'DJ_email', 'DJ_password']
+        fields = '__all__'
 
+"""class DJ_user_clientChangeForm(UserChangeForm):
+    A form for updating users. Includes all the fields on
+    the user, but replaces the password field with admin's
+    password hash display field.
+    
+
+    def __init__(self, *args):
+        super(DJ_user_clientChangeForm, self).__init__(*args)
+        del self.fields['DJ_user']
+
+    class Meta:
+        model = DJ_user_client
+
+class UserForm(forms.ModelForm):
+    DJ_password = forms.CharField(widget=forms.PasswordInput)
+
+    class Meta:
+        model = DJ_user_client
+        #fields = '__all__'
+"""
 """class UserFormProfile(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
 

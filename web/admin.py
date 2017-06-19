@@ -1,6 +1,6 @@
 from django.contrib import admin
-#from .models import Album, Song
+from .models import DJ_user_client
 # Register your models here.
 
-#admin.site.register(Album)
+admin.site.register(DJ_user_client)
 #admin.site.register(Song)
