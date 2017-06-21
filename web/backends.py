@@ -1,11 +1,11 @@
-from models import DJ_user_client
+from .models import DJ_user_client
 
 class CustomUserAuth(object):
 
     def authenticate(self, username=None, password=None):
         try:
-            user = CustomUser.objects.get(DJ_user=username)
-            if user.check_password(password):
+            user = DJ_user_client.objects.get(DJ_user=username)
+            if user.DJ_password(password):
                 return user
         except DJ_user_client.DoesNotExist:
             return None

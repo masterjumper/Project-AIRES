@@ -40,14 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap3',    # If you use django-bootstrap3
     'crispy_forms',  # If you user django-crispy-forms
-    'django_popup_view_field',
+    'django_popup_view_field',    
 ]
 
 #########Autenticacion##############
 
 AUTH_USER_MODEL = "web.DJ_user_client"
 
-AUTHENTICATION_BACKENDS = ('custom_user.backends.CustomUserAuth',)
+AUTHENTICATION_BACKENDS = ('web.backends.CustomUserAuth',)
 
 ################################
 
@@ -92,7 +92,7 @@ DATABASES = {
     #    'NAME': 'seria',
     #    'HOST': '127.0.0.1',
     #    'PORT': '3306',
-    #    'USER': 'projectaires',
+    #   'USER': 'projectaires',
     #    'PASSWD': '',
     #}  
 

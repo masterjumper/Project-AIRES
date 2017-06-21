@@ -34,7 +34,7 @@ class CustomUserManager(BaseUserManager):
         return self._create_user(DJ_user, DJ_password, True, True)
 
 class DJ_user_client(models.Model):
-    DJ_id_client    = models.IntegerField(primary_key=True)    
+    DJ_id_client    = models.IntegerField(primary_key=True)
     DJ_user         = models.CharField(max_length=10)
     DJ_password     = models.CharField(max_length=10)
     DJ_email        = models.CharField(max_length=50)
@@ -73,7 +73,7 @@ class DJ_user_client(models.Model):
         send_mail(subject, message, from_email, [self.DJ_email])
 
     def __str__(self):
-        return self.DJ_email
+        return self.DJ_user
 
 """class DJ_notifications(models.Model):
     DJ_id_client = models.ForeingKey(on_delete=models.CASCADE)
