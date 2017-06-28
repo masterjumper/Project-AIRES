@@ -40,16 +40,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap3',    # If you use django-bootstrap3
     'crispy_forms',  # If you user django-crispy-forms
-    'django_popup_view_field',    
+    'django_popup_view_field',
 ]
 
-#########Autenticacion##############
+######################### AUTH ############################
 
 AUTH_USER_MODEL = "web.DJ_user_client"
 
 AUTHENTICATION_BACKENDS = ('web.backends.CustomUserAuth',)
 
-################################
+###########################################################
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -87,19 +87,19 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 #DATABASES = {
 DATABASES = {
-    #'default': {
-    #    'ENGINE': 'django.db.backends.mysql',
-    #    'NAME': 'seria',
-    #    'HOST': '127.0.0.1',
-    #    'PORT': '3306',
-    #   'USER': 'projectaires',
-    #    'PASSWD': '',
-    #}  
-
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'aires',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+        'USER': 'projectaires',
+        'PASSWD': '',
     }
+    #}
+    #'default': {
+    #    'ENGINE': 'django.db.backends.sqlite3',
+    #    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #}
 }
 
 

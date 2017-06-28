@@ -1,57 +1,59 @@
-from django.contrib.auth.models import Permission, User
+from django.conf import settings
+from django.contrib.auth.models import PermissionsMixin, User
 from django.db import models
-from datetime import datetime
-from time import timezone
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+#from datetime import datetime
 from django.core.mail import send_mail
 from django.utils.translation import ugettext_lazy as _
 
-
 # Create your models here.
+
 class CustomUserManager(BaseUserManager):
-    def _create_user(self, DJ_user, DJ_password, DJ_is_staff, DJ_is_superuser):
+    def _create_user(self, DJ_user, DJ_email, DJ_password, DJ_is_active, DJ_is_admin):
         """
         Creates and saves a User with the given email and password.
         """
-        now = timezone.now()
+        #snow = timezone.now()
         
         if not DJ_user:
-            raise ValueError('The given DJ_user must be set')
+            raise ValueError('The given user must be set')
         
-        #DJ_user = self.normalize_email(DJ_user)
-        DJ_user = self.model(DJ_user=DJ_user,
-                          DJ_is_staff=DJ_is_staff, is_active=True,
-                          DJ_is_superuser=DJ_is_superuser, last_login=now,
-                          date_joined=now)
+        #email = self.normalize_email(email)
+        user = self.model(
+                            DJ_user     = DJ_user,
+                            DJ_email    = self.normalize_email(DJ_email),
+                            is_active   = DJ_is_active,
+                            is_admin    = DJ_is_admin,
+                          )
         user.set_password(DJ_password)
         user.save(using=self._db)
         return user
 
-    def create_user(self, DJ_user, DJ_password=None):
-        return self._create_user(DJ_user, DJ_password, False, False)
+    def create_user(self, DJ_user, DJ_email, DJ_password, DJ_is_active, DJ_is_admin):
+        return self._create_user(DJ_user, DJ_email, DJ_password, True, False)
 
-    def create_superuser(self, DJ_user, DJ_password):
-        return self._create_user(DJ_user, DJ_password, True, True)
+    def create_superuser(self,  DJ_user, DJ_email, DJ_password, DJ_is_active, DJ_is_admin):
+        return self._create_user(DJ_user, DJ_email, DJ_password, True, True)
 
-class DJ_user_client(models.Model):
-    DJ_id_client    = models.IntegerField(primary_key=True)
+class DJ_user_client(AbstractBaseUser):
+    DJ_id_client    = models.IntegerField(unique=True)
     DJ_user         = models.CharField(max_length=10)
     DJ_password     = models.CharField(max_length=10)
-    DJ_email        = models.CharField(max_length=50)
-    DJ_is_staff     = models.BooleanField(default=False)
-    DJ_is_superuser = models.BooleanField(default=False)
-    DJ_is_active    = models.BooleanField(default=True)
-    is_anonymous    = models.BooleanField(default=False)
-    is_authenticated= models.BooleanField(default=False)
+    DJ_email        = models.EmailField()
+    DJ_name         = models.CharField(max_length=50, default='')
+    DJ_last_name    = models.CharField(max_length=50, default='')
+    is_active       = models.BooleanField(default=True)
+    is_staff        = models.BooleanField(default=False)
+    is_admin        = models.BooleanField(default=False)
+    objects         = CustomUserManager()
     USERNAME_FIELD  = 'DJ_id_client'
-    REQUIRED_FIELDS = ['DJ_user', 'DJ_email']
-
-    objects = CustomUserManager()
-
+    REQUIRED_FIELDS = ['DJ_user', 'DJ_password', 'DJ_email']
+    
+    
     class Meta:
-            verbose_name = _('user')
-            verbose_name_plural = _('users')    
-        
+        verbose_name = _('user')
+        verbose_name_plural = _('users')    
+    
     def get_absolute_url(self):
         return "/users/%s/" % urlquote(self.DJ_user)
         
@@ -63,17 +65,31 @@ class DJ_user_client(models.Model):
         return full_name.strip()
         
     def get_short_name(self):
-        """Returns the short name for the user."""
+        "Returns the short name for the user."
         return self.DJ_user
 
     def email_user(self, subject, message, from_email=None):
         """
         Sends an email to this User.
         """
-        send_mail(subject, message, from_email, [self.DJ_email])
+        send_mail(subject, message, from_email, [self.DJ_email])   
 
     def __str__(self):
         return self.DJ_user
+
+    def has_perm(self, perm, obj=None):
+        "Does the user have a specific permission?"
+        return True
+
+    def has_module_perms(self, app_label):
+        "Does the user have permissions to view the app `app_label`?"
+        # Simplest possible answer: Yes, always
+        return True
+
+    @property
+    def is_staff(self):
+        "Is the user a member of staff?"
+        return self.is_admin
 
 """class DJ_notifications(models.Model):
     DJ_id_client = models.ForeingKey(on_delete=models.CASCADE)
@@ -138,4 +154,4 @@ class DJ_candidates_similar(models.Model):
     AS_favorites = models.CharField(max_length=10)
 
     def __str__(self):
-        return self.DJ_id_candidate_similar"""
+        return self.DJ_id_candidate_similar"""        

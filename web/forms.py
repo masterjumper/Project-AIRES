@@ -1,60 +1,45 @@
 from django import forms
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django_popup_view_field.fields import PopupViewField
 from web.popups import ColorsPopupView
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import DJ_user_client, CustomUserManager
+from web.models import DJ_user_client
 
-#class AlbumForm(forms.ModelForm):
-
-#    class Meta:
-#        model = Album
-#        fields = ['artist', 'album_title', 'genre', 'album_logo']
-
-
-#class SongForm(forms.ModelForm):
-
-#    class Meta:
-#        model = Song
-#        fields = ['song_title', 'audio_file']
-
-
-
-
-class DJ_user_clientCreationForm(UserCreationForm):
+class CustomUserCreationForm(UserCreationForm):
     """
     A form that creates a user, with no privileges, from the given email and
     password.
     """
 
-    def __init__(self, *args):
-        super(DJ_user_clientCreationForm, self).__init__(*args)
+    def __init__(self, *args, **kargs):
+        super(CustomUserCreationForm, self).__init__(*args, **kargs)
         del self.fields['DJ_user']
 
     class Meta:
         model = DJ_user_client
-        fields = '__all__'
+        fields = ("DJ_user",)
 
-"""class DJ_user_clientChangeForm(UserChangeForm):
-    A form for updating users. Includes all the fields on
+class CustomUserChangeForm(UserChangeForm):
+    """A form for updating users. Includes all the fields on
     the user, but replaces the password field with admin's
     password hash display field.
-    
+    """
 
-    def __init__(self, *args):
-        super(DJ_user_clientChangeForm, self).__init__(*args)
+    def __init__(self, *args, **kargs):
+        super(CustomUserChangeForm, self).__init__(*args, **kargs)
         del self.fields['DJ_user']
 
     class Meta:
         model = DJ_user_client
 
+
 class UserForm(forms.ModelForm):
-    DJ_password = forms.CharField(widget=forms.PasswordInput)
+    password = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
         model = DJ_user_client
-        #fields = '__all__'
-"""
+        fields = ['DJ_user', 'DJ_email', 'DJ_password']
+
 """class UserFormProfile(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
 
